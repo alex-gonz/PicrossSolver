@@ -41,6 +41,16 @@ public class Puzzle {
   }
 
   /**
+   * Interprets a puzzle given a file name and path
+   * @param file the given file name and path
+   * @return a puzzle matching description in the file
+   */
+  public static Puzzle interpretPuzzle(String file) {
+    //TODO
+    return null;
+  }
+  
+  /**
    * Gets the entire board
    * @return the state of the board
    */
