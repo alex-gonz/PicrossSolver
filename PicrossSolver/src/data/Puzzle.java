@@ -28,13 +28,16 @@ public class Puzzle {
    * Initialize the puzzle with given column and row numbers, and a blank board 
    * @param colNums
    * @param rowNums
+   * @throws IllegalStateException throws exception if given puzzle is determined unsolvable
    */
-  public Puzzle(ArrayList<ArrayList<Integer>> colNums, ArrayList<ArrayList<Integer>> rowNums) {
+  public Puzzle(ArrayList<ArrayList<Integer>> colNums, ArrayList<ArrayList<Integer>> rowNums) throws IllegalStateException{
     this.colNums = colNums;
     this.rowNums = rowNums;
     cols = colNums.size();
     rows = rowNums.size();
     board = new int[cols * rows];
+    if(!isValidPuzzle())
+      throw new IllegalStateException("Given Board Cannot be solved!");
   }
 
   /**
@@ -65,4 +68,69 @@ public class Puzzle {
     board[pos]= val;
   }
   
+  /**
+   * Determines if a board could have solutions based on its dimensions, colNums and rowNums
+   * @return false if the board is determined impossible to solve, otherwise true
+   */
+  public boolean isValidPuzzle() {
+    boolean ret = true;
+    
+    ret = ret && sameNumSquares();
+    ret = ret && squaresFit();
+    
+    return ret;
+  }
+
+  /**
+   * Returns true if all squares of the columns and rows could fit in the board
+   * @return true if each column and row could contain specified squares
+   */
+  private boolean squaresFit() {
+    for(ArrayList<Integer> list: colNums) {
+      int lineTotal = 0;
+      for(Integer i: list) {
+        //Add i+1 to account for extra space between numbers
+        lineTotal += i+1;
+      }
+      //Remove extra space
+      lineTotal--;
+      //Compare to spaces in column
+      if(lineTotal > cols)
+        return false;
+    }
+    
+    for(ArrayList<Integer> list: rowNums) {
+      int lineTotal = 0;
+      for(Integer i: list) {
+        //Add i+1 to account for extra space between numbers
+        lineTotal += i+1;
+      }
+      //Remove extra space
+      lineTotal--;
+      //Compare to spaces in row
+      if(lineTotal > rows)
+        return false;
+    }
+    return true;
+  }
+
+  /**
+   * Checks if there are the same number of required squares in columns as in rows.
+   * If false, puzzle cannot be solved.
+   * @return True if number of required squares are same for both columns and rows.
+   */
+  private boolean sameNumSquares() {
+    int total = 0;
+    for(ArrayList<Integer> a: colNums) {
+      for(Integer i: a) {
+        total += i;
+      }
+    }
+    for(ArrayList<Integer> a: rowNums) {
+      for(Integer i: a) {
+        total -= i;
+      }
+    }
+    return total == 0;
+  }
 }
