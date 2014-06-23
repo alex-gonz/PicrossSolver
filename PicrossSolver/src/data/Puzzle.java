@@ -1,6 +1,7 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class to hold a representation of the puzzle and current board state
@@ -142,5 +143,78 @@ public class Puzzle {
       }
     }
     return total == 0;
+  }
+
+  /**
+   * Returns false if there must be an incorrect mark on the board
+   * @return false if there is an incorrect mark on the board, otherwise true
+   */
+  public boolean isSolvable() {
+    boolean ret = true;
+    ret = ret && matchesFull();
+    return ret;
+  }
+
+  /**
+   * Determine if fully filled rows and columns of board match the numbers on edges 
+   * @return true if all full rows and columns match, false otherwise
+   */
+  private boolean matchesFull() {
+    // TODO Test
+    for(int i = 0; i< colNums.size(); i++) {
+      ArrayList<Integer> temp = new ArrayList<Integer>();
+      int continuousFilled = 0;
+      boolean skip = false;
+      //Iterate through row i of board
+      for(int j = i*cols; j < (i+1)*cols; j++) {
+        //Break if row isn't full of guessed values
+        if(board[j] == 0) {
+          skip = true; //Set so that we know we broke the loop
+          break;
+        }
+          
+        //Add to list if next is blank and last square was not blank
+        if(board[j] == 2 && continuousFilled != 0) {
+          temp.add(continuousFilled);
+          continuousFilled = 0;
+          //Add to the number of square in a row if square is filled in
+        } else if (board[j] == 1) {
+          continuousFilled++;
+        }
+      }
+      //Skip line if skip flag is true
+      if(skip)
+        continue;
+      //Add the last continuous patch of squares
+      temp.add(continuousFilled);
+      //Check if row matches what we counted
+      if(!temp.equals(colNums.get(i)))
+        return false;
+    }
+    return true;
+  }
+
+  /**
+   * Return the first uncertain square
+   * @return the first uncertain square, or a negative if all full
+   */
+  public int getFirstBlankPos() {
+    // TODO Test
+    for(int pos = 0; pos < board.length; pos++) {
+      if(board[pos] == 0)
+        return pos;
+    }
+    return -1;
+  }
+
+  /**
+   * Returns a new copy of this puzzle
+   * @return a copy of this puzzle
+   */
+  public Puzzle createCopy() {
+    // TODO Test
+    Puzzle p = new Puzzle(colNums, rowNums);
+    p.board = Arrays.copyOf(board, board.length);
+    return p;
   }
 }
