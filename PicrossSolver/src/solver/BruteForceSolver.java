@@ -2,7 +2,7 @@ package solver;
 
 import java.util.ArrayList;
 
-import data.Puzzle;
+import puzzle.Puzzle;
 
 /**
  * Solve the puzzle by brute force
