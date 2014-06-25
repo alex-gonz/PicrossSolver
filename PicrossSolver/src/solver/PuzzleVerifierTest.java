@@ -8,6 +8,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,18 +50,39 @@ public class PuzzleVerifierTest {
   /**
    * Test method for {@link solver.PuzzleVerifier#isValidPuzzle(puzzle.Puzzle)}.
    */
-  @Test
+  @Test(expected = IllegalStateException.class)
   public void testIsValidPuzzle() {
-    fail("Not yet implemented"); // TODO
+    //Init arraylists for puzzle
+    ArrayList<ArrayList<Integer>> row = new ArrayList<ArrayList<Integer>>();
+    ArrayList<ArrayList<Integer>> col = new ArrayList<ArrayList<Integer>>();
+    ArrayList<Integer> a = new ArrayList<Integer>();
+    a.add(2);
+    a.add(1);
+    
+    row.add(new ArrayList<Integer>());
+    row.add(a);
+    row.add(a);
+    row.add(new ArrayList<Integer>());
+    row.add(a);
+    
+    col.add(a);
+    col.add(a);
+    col.add(new ArrayList<Integer>());
+    col.add(a);
+    //Create Puzzle and test
+    Puzzle p = null;
+    try {
+      p = new Puzzle(col, row);
+    } catch (IllegalStateException e) {
+      fail("Shouldn't catch on a solvable puzzle");
+    }
+    
+    //Change so that this becomes an unsolvable puzzle
+    a.add(1);
+    p = new Puzzle(col, row);
+    fail("Didn't catch exception");
   }
-
-  /**
-   * Test method for {@link solver.PuzzleVerifier#isSolvable(puzzle.Puzzle)}.
-   */
-  @Test
-  public void testIsSolvable() {
-    fail("Not yet implemented"); // TODO
-  }
+  
   /**
    * Test method for {@link solver.PuzzleVerifier#matchesFull(puzzle.Puzzle)}.
    */

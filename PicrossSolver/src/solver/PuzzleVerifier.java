@@ -12,7 +12,7 @@ import puzzle.Puzzle;
 public class PuzzleVerifier {
   /**
    * Determines if a board could have solutions based on its dimensions, colNums and rowNums
-   * @param p TODO
+   * @param p given puzzle
    * @return false if the board is determined impossible to solve, otherwise true
    */
   public static boolean isValidPuzzle(Puzzle p) {
@@ -25,7 +25,7 @@ public class PuzzleVerifier {
   }
   /**
    * Returns true if all squares of the columns and p.rows could fit in the board
-   * @param p TODO
+   * @param p given puzzle
    * @return true if each column and row could contain specified squares. False if they don't, or given null puzzle
    */
   private static boolean squaresFit(Puzzle p) {
@@ -62,7 +62,7 @@ public class PuzzleVerifier {
   /**
    * Checks if there are the same number of required squares in columns as in p.rows.
    * If false, puzzle cannot be solved.
-   * @param p TODO
+   * @param p given puzzle
    * @return True if number of required squares are same for both columns and p.rows. 
    * False if they don't match or puzzle is null
    */
@@ -82,21 +82,10 @@ public class PuzzleVerifier {
     }
     return total == 0;
   }
-  
-  /**
-   * Returns false if there must be an incorrect mark on the board
-   * @param p TODO
-   * @return false if there is an incorrect mark on the board, otherwise true
-   */
-  public static boolean isSolvable(Puzzle p) {
-    boolean ret = true;
-    ret = ret && matchesFull(null);
-    return ret;
-  }
 
   /**
    * Determine if fully filled p.rows and columns of board match the numbers on edges 
-   * @param p TODO
+   * @param p given puzzle
    * @return true if all full p.rows and columns match, false otherwise
    */
   public static boolean matchesFull(Puzzle p) {
@@ -105,7 +94,7 @@ public class PuzzleVerifier {
       int continuousFilled = 0;
       boolean skip = false;
       //Iterate through row i of board
-      for(int j = i*p.cols; j < (i+1)*p.cols; j++) {
+      for(int j = 0; j < p.rows; j++) {
         int pos = j + i*p.cols;
         //Break if row isn't full of guessed values
         if(p.getBoard()[pos] == 0) {
@@ -133,7 +122,6 @@ public class PuzzleVerifier {
         return false;
     }
     
-    //TODO do same for columns
     for(int k = 0; k< p.rows; k++) {
       ArrayList<Integer> currentCol = new ArrayList<Integer>();
       int continuousFilled = 0;

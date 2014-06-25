@@ -18,7 +18,7 @@ public class BruteForceSolver {
    */
   public static Puzzle findSolution(Puzzle p) {
     //TODO Test and fix
-    if(p == null || !PuzzleVerifier.isSolvable(p))
+    if(p == null || !PuzzleVerifier.matchesFull(p))
       return null;
     int pos = p.getFirstBlankPos();
     if(pos < 0)

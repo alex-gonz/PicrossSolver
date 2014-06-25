@@ -12,7 +12,15 @@ import puzzle.Puzzle;
 import solver.BruteForceSolver;
 
 /**
- * Takes in a file at given location and will output solution to output
+ * Handles file io for puzzles
+ * When reading a puzzle, 
+ * First line of file should have number of rows, a space, then number of columns
+ * Following lines should have the rows then columns. 
+ * The numbers which specify the squares to be filled in should be given left to right, 
+ * or up to down and space separated.
+ * If there are no squares to be filled in (line is blank, 0 normally on edge), the line
+ * should be left blank in the file.
+   * 
  * @author coatrain
  *
  */
@@ -81,7 +89,7 @@ public class FileHandler {
   public static String translate(int i) {
     // TODO Test
     if(i == 1)
-      return "█";
+      return "\u2588";
     if(i == 2 || i == 0)
       return " ";
     return null;
