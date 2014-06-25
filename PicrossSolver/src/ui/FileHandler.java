@@ -19,7 +19,7 @@ import solver.BruteForceSolver;
 public class FileHandler {
 
   public static final String inputLocation = "testPuzzles/5x5.txt";
-  public static final String outputLocation = "testPuzzles/output.txt";
+  public static final String outputLocation = "output.txt";
   public static final Charset utf8 = StandardCharsets.UTF_8;
   
   public static void main(String[] args) {
@@ -144,30 +144,43 @@ public class FileHandler {
       String[] line = lines.get(0).split("\\s");
       int rows = Integer.parseInt(line[0]);
       int cols = Integer.parseInt(line[1]);
+      ArrayList<ArrayList<Integer>> rowNums = new ArrayList<ArrayList<Integer>>(rows);
+      ArrayList<ArrayList<Integer>> colNums = new ArrayList<ArrayList<Integer>>(cols);
       
       //Next rows lines specify numbers on row for puzzle
-      ArrayList<ArrayList<Integer>> rowNums = new ArrayList<ArrayList<Integer>>();
       for(int i = 1; i<rows+1; i++) {
-        //Split line into individual numbers
-        line = lines.get(i).split("\\s");
         //Create row list for numbers
         ArrayList<Integer> currentRow = new ArrayList<Integer>();
+        //Split line into individual numbers
+        //Handle case where consecutive last lines are empty
+        if(lines.size() < i+1) {
+          rowNums.add(currentRow);
+          continue;
+        }
+        line = lines.get(i).split("\\s");
         //Add numbers to row
         for(String s: line) {
-          currentRow.add(Integer.parseInt(s));
+          //Handle empty line (no filled-in squares on line)
+          if(!s.equals(""))
+            currentRow.add(Integer.parseInt(s));
         }
         //Add row to row list
         rowNums.add(currentRow);
       }
       
-      //then next cols lines specify numbers on the columsn
-      ArrayList<ArrayList<Integer>> colNums = new ArrayList<ArrayList<Integer>>();
+      //then next cols lines specify numbers on the columns
       for(int i = rows+1; i<rows+cols+1; i++) {
         //Do the same for columns
-        line = lines.get(i).split("\\s");
         ArrayList<Integer> currentCol = new ArrayList<Integer>();
+        if(lines.size() < i+1) {
+          colNums.add(currentCol);
+          continue;
+        }
+        line = lines.get(i).split("\\s");
+        
         for(String s: line) {
-          currentCol.add(Integer.parseInt(s));
+          if(!s.equals(""))
+            currentCol.add(Integer.parseInt(s));
         }
         colNums.add(currentCol);
       }
