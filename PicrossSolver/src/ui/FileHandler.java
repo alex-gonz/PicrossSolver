@@ -53,8 +53,6 @@ public class FileHandler {
    * @param fileLocation given file location
    */
   public static void printBoardToFile(Puzzle p, String fileLocation) {
-    // TODO Test
-      
     //Generate lines to write
     List<String> lines = new ArrayList<String>();
     //Only get board if p isn't null
@@ -84,15 +82,14 @@ public class FileHandler {
   /**
    * Translates integers in board to a visual representation
    * @param i given integer
-   * @return dark block if it's filled in, space if it's not, null if it doesn't match
+   * @return dark block if it's filled in, space if it's not, empty string if it doesn't match anything
    */
   public static String translate(int i) {
-    // TODO Test
     if(i == 1)
       return "\u2588";
     if(i == 2 || i == 0)
       return " ";
-    return null;
+    return "";
   }
 
   /**
@@ -101,7 +98,6 @@ public class FileHandler {
    * @param fileLocation given file location
    */
   public static void printPuzzleToFile(Puzzle p, String fileLocation) {
-    // TODO test
     //Generate lines to write to file
     List<String> lines = new ArrayList<String>();
     //Add row and col nums
@@ -144,7 +140,6 @@ public class FileHandler {
    * @param fileLocation location of the file
    * @return a puzzle with a blank board matching the file, or null if cannot be parsed to a puzzle
    */
-  //TODO test
   public static Puzzle getFilePuzzle(String fileLocation) {
     try {
       List<String> lines = Files.readAllLines(Paths.get(fileLocation), utf8);

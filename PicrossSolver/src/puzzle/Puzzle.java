@@ -98,4 +98,50 @@ public class Puzzle {
     p.board = Arrays.copyOf(board, board.length);
     return p;
   }
+
+  @Override
+  /**
+   * Generated hashCode method
+   */
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + Arrays.hashCode(board);
+    result = prime * result + ((colNums == null) ? 0 : colNums.hashCode());
+    result = prime * result + cols;
+    result = prime * result + ((rowNums == null) ? 0 : rowNums.hashCode());
+    result = prime * result + rows;
+    return result;
+  }
+
+  @Override
+  /**
+   * Generated equals method
+   */
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Puzzle other = (Puzzle) obj;
+    if (!Arrays.equals(board, other.board))
+      return false;
+    if (colNums == null) {
+      if (other.colNums != null)
+        return false;
+    } else if (!colNums.equals(other.colNums))
+      return false;
+    if (cols != other.cols)
+      return false;
+    if (rowNums == null) {
+      if (other.rowNums != null)
+        return false;
+    } else if (!rowNums.equals(other.rowNums))
+      return false;
+    if (rows != other.rows)
+      return false;
+    return true;
+  }
 }
