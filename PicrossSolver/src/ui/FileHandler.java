@@ -18,7 +18,7 @@ import solver.BruteForceSolver;
  */
 public class FileHandler {
 
-  public static final String inputLocation = "testPuzzles/input.txt";
+  public static final String inputLocation = "testPuzzles/5x5.txt";
   public static final String outputLocation = "testPuzzles/output.txt";
   public static final Charset utf8 = StandardCharsets.UTF_8;
   
