@@ -12,10 +12,10 @@ public class Puzzle {
   //These represent the series of numbers on the edge of the board denoting the numbers of filled in squares
   public final ArrayList<ArrayList<Integer>> colNums;
   public final ArrayList<ArrayList<Integer>> rowNums;
-  
+
   public final int rows;
   public final int cols;
-  
+
   /**
    * Board that the user guesses on. Row determined by pos/cols. Column determined by pos%cols. 
    * Integers represent different states:
@@ -24,7 +24,7 @@ public class Puzzle {
    * 2 is a guessed crossed out / guessed blank square
    */
   private int[] board;
-  
+
   /**
    * Initialize the puzzle with given column and row numbers, and a blank board 
    * @param colNums
@@ -50,7 +50,7 @@ public class Puzzle {
     //TODO
     return null;
   }
-  
+
   /**
    * Gets the entire board
    * @return the state of the board
@@ -66,7 +66,7 @@ public class Puzzle {
   public void setBoard(int[] board) {
     this.board = board;
   }
-  
+
   /**
    * Sets value at given position on board
    * @param val value to set in board
@@ -78,17 +78,17 @@ public class Puzzle {
       throw new ArrayIndexOutOfBoundsException("Position past end of board");
     board[pos]= val;
   }
-  
+
   /**
    * Determines if a board could have solutions based on its dimensions, colNums and rowNums
    * @return false if the board is determined impossible to solve, otherwise true
    */
   public boolean isValidPuzzle() {
     boolean ret = true;
-    
+
     ret = ret && sameNumSquares();
     ret = ret && squaresFit();
-    
+
     return ret;
   }
 
@@ -109,7 +109,7 @@ public class Puzzle {
       if(lineTotal > cols)
         return false;
     }
-    
+
     for(ArrayList<Integer> list: rowNums) {
       int lineTotal = 0;
       for(Integer i: list) {
@@ -161,8 +161,8 @@ public class Puzzle {
    */
   private boolean matchesFull() {
     // TODO Test
-    for(int i = 0; i< colNums.size(); i++) {
-      ArrayList<Integer> temp = new ArrayList<Integer>();
+    for(int i = 0; i< cols; i++) {
+      ArrayList<Integer> currentRow = new ArrayList<Integer>();
       int continuousFilled = 0;
       boolean skip = false;
       //Iterate through row i of board
@@ -172,10 +172,10 @@ public class Puzzle {
           skip = true; //Set so that we know we broke the loop
           break;
         }
-          
+
         //Add to list if next is blank and last square was not blank
         if(board[j] == 2 && continuousFilled != 0) {
-          temp.add(continuousFilled);
+          currentRow.add(continuousFilled);
           continuousFilled = 0;
           //Add to the number of square in a row if square is filled in
         } else if (board[j] == 1) {
@@ -186,9 +186,36 @@ public class Puzzle {
       if(skip)
         continue;
       //Add the last continuous patch of squares
-      temp.add(continuousFilled);
+      currentRow.add(continuousFilled);
       //Check if row matches what we counted
-      if(!temp.equals(colNums.get(i)))
+      if(!currentRow.equals(rowNums.get(i)))
+        return false;
+    }
+    
+    //TODO do same for columns
+    for(int k = 0; k< rows; k++) {
+      ArrayList<Integer> currentCol = new ArrayList<Integer>();
+      int continuousFilled = 0;
+      boolean skip = false;
+      //Iterate through column k of board
+      for(int l = 0; l < rows; l++) {
+        int pos = k+l*cols;
+        if(board[pos] == 0) {
+          skip = true;
+          break;
+        }
+
+        if(board[pos] == 2 && continuousFilled != 0) {
+          currentCol.add(continuousFilled);
+          continuousFilled = 0;
+        } else if (board[pos] == 1) {
+          continuousFilled++;
+        }
+      }
+      if(skip)
+        continue;
+      currentCol.add(continuousFilled);
+      if(!currentCol.equals(colNums.get(k)))
         return false;
     }
     return true;

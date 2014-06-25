@@ -17,7 +17,7 @@ public class BruteForceSolver {
    * @return the solved puzzle if one is found
    */
   public static Puzzle findSolution(Puzzle p) {
-    //TODO Test
+    //TODO Test and fix
     if(p == null || !p.isSolvable())
       return null;
     int pos = p.getFirstBlankPos();
@@ -28,7 +28,8 @@ public class BruteForceSolver {
     //Guess that next empty square is filled in
     p.setBoard(1, pos);
     //Recurse and see if we can find a solution from here
-    if(findSolution(p) != null)
+    p = findSolution(p);
+    if(p != null)
       return p;
     //If we didn't find a solution, try setting next empty square as blank
     p1.setBoard(2, pos);

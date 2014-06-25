@@ -39,23 +39,28 @@ public class FileHander {
   }
 
   /**
-   * Writes a board of a puzzle to given location, creating or overwriting at the location
+   * Writes a board of a puzzle to given location, creating or overwriting at the location.
+   * If puzzle is null, creates an empty file
    * @param p a given puzzle
    * @param fileLocation given file location
    */
   public static void printBoardToFile(Puzzle p, String fileLocation) {
     // TODO Test
+      
     //Generate lines to write
     List<String> lines = new ArrayList<String>();
-    //Create an initialize a stringbuilder to hold each line
-    StringBuilder sb = new StringBuilder(p.cols);
-    //Fill lines by rows of board
-    for(int i=0; i<p.getBoard().length; i++) {
-      sb.append(translate(p.getBoard()[i]));
-      //Check if we've reached the end of the current row
-      if((i+1)%p.cols == 0) {
-        lines.add(sb.toString());
-        sb = new StringBuilder(p.cols);
+    //Only get board if p isn't null
+    if(p != null) {
+      //Create an initialize a stringbuilder to hold each line
+      StringBuilder sb = new StringBuilder(p.cols);
+      //Fill lines by rows of board
+      for(int i=0; i<p.getBoard().length; i++) {
+        sb.append(translate(p.getBoard()[i]));
+        //Check if we've reached the end of the current row
+        if((i+1)%p.cols == 0) {
+          lines.add(sb.toString());
+          sb = new StringBuilder(p.cols);
+        }
       }
     }
     //sb should be equivalent to a new stringbuilder at this point
