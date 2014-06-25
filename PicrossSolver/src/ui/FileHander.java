@@ -18,8 +18,8 @@ import solver.BruteForceSolver;
  */
 public class FileHander {
 
-  public static final String inputLocation = "input.txt";
-  public static final String outputLocation = "output.txt";
+  public static final String inputLocation = "testPuzzles/input.txt";
+  public static final String outputLocation = "testPuzzles/output.txt";
   public static final Charset utf8 = StandardCharsets.UTF_8;
   
   public static void main(String[] args) {
@@ -157,17 +157,17 @@ public class FileHander {
       
       //then next cols lines specify numbers on the columsn
       ArrayList<ArrayList<Integer>> colNums = new ArrayList<ArrayList<Integer>>();
-      for(int i = rows+1; i<cols+1; i++) {
+      for(int i = rows+1; i<rows+cols+1; i++) {
         //Do the same for columns
         line = lines.get(i).split("\\s");
         ArrayList<Integer> currentCol = new ArrayList<Integer>();
         for(String s: line) {
           currentCol.add(Integer.parseInt(s));
         }
-        rowNums.add(currentCol);
+        colNums.add(currentCol);
       }
       
-      return new Puzzle(rowNums, colNums);
+      return new Puzzle(colNums, rowNums);
     } catch (IOException e) {
       e.printStackTrace();
     }
