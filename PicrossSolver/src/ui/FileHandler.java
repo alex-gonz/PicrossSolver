@@ -16,7 +16,7 @@ import solver.BruteForceSolver;
  * @author coatrain
  *
  */
-public class FileHander {
+public class FileHandler {
 
   public static final String inputLocation = "testPuzzles/input.txt";
   public static final String outputLocation = "testPuzzles/output.txt";
@@ -24,7 +24,7 @@ public class FileHander {
   
   public static void main(String[] args) {
     //Parse a puzzle from file
-    Puzzle p = getStringPuzzle(inputLocation);
+    Puzzle p = getFilePuzzle(inputLocation);
     //Quit if we don't have a puzzle
     if(p == null) {
       System.err.println("Not given a valid puzzle.");
@@ -137,7 +137,7 @@ public class FileHander {
    * @return a puzzle with a blank board matching the file, or null if cannot be parsed to a puzzle
    */
   //TODO test
-  public static Puzzle getStringPuzzle(String fileLocation) {
+  public static Puzzle getFilePuzzle(String fileLocation) {
     try {
       List<String> lines = Files.readAllLines(Paths.get(fileLocation), utf8);
       //First line says how many rows, then columns
