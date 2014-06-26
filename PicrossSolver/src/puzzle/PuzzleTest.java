@@ -1,5 +1,6 @@
 package puzzle;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -178,4 +179,17 @@ public class PuzzleTest {
     assertTrue(Arrays.equals(other.getBoard(), small.getBoard()));
   }
 
+  /**
+   * Test method for {@link puzzle.Puzzle#boardToPuzzle(int[], int, int)}.
+   */
+  @Test
+  public void testBoardToPuzzle() {
+    //Test that rows and cols must match to given board's size
+    assertEquals(null, Puzzle.boardToPuzzle(smallSol, 4, 6));
+    
+    //Test for matching
+    assertTrue(singleSquare.equals(Puzzle.boardToPuzzle(singleSquareSol, 1, 1)));
+    assertTrue(small.equals(Puzzle.boardToPuzzle(smallSol, 5, 5)));
+    assertFalse(small.equals(Puzzle.boardToPuzzle(smallWrong, 5, 5)));
+  }
 }

@@ -146,4 +146,61 @@ public class Puzzle {
       return false;
     return true;
   }
+
+  /**
+   * Generates an empty puzzle with same constraints as a given board
+   * @param board given board
+   * @param cols number of columns in the puzzle
+   * @param rows number of rows in the puzzle
+   * @return a puzzle with blank board matching given board, cols and rows.
+   * null if cols and rows don't match board size
+   */
+  public static Puzzle boardToPuzzle(int[] board, int cols, int rows) {
+    if(cols*rows != board.length)
+      return null;
+    ArrayList<ArrayList<Integer>> colNums = new ArrayList<ArrayList<Integer>>();
+    ArrayList<ArrayList<Integer>> rowNums = new ArrayList<ArrayList<Integer>>();
+
+  //Generate rowNums
+    for(int row = 0; row < rows; row++) {
+      ArrayList<Integer> currentRow = new ArrayList<Integer>();
+      int continuousLine = 0;
+      for(int col = 0; col < cols; col++) {
+        int pos = col+row*cols;
+        //If we are ending a line, add it to list
+        if(board[pos] != 1 && continuousLine > 0) {
+          currentRow.add(continuousLine);
+          continuousLine = 0;
+        } else if(board[pos] == 1) {
+          //Add to current line if square is filled in
+          continuousLine++;
+        }
+      }
+      //Add last line if there is one
+      if(continuousLine > 0)
+        currentRow.add(continuousLine);
+      //Add row to row list
+      rowNums.add(currentRow);
+    }
+    
+  //Generate colNums
+    //Iterate down column instead of across row
+    for(int col = 0; col < cols; col++) {
+      ArrayList<Integer> currentCol = new ArrayList<Integer>();
+      int continuousLine = 0;
+      for(int row = 0; row < rows; row++) {
+        int pos = col+row*cols;
+        if(board[pos] != 1 && continuousLine > 0) {
+          currentCol.add(continuousLine);
+          continuousLine = 0;
+        } else if(board[pos] == 1) {
+          continuousLine++;
+        }
+      }
+      if(continuousLine > 0)
+        currentCol.add(continuousLine);
+      colNums.add(currentCol);
+    }
+    return new Puzzle(colNums, rowNums);
+  }
 }
