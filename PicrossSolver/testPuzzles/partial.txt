@@ -1,0 +1,18 @@
+4 2
+2
+0
+1
+1
+1 1
+1 1
+
+Has solutions:
+XX
+
+X
+ X
+and
+XX
+
+ X
+X
