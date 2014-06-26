@@ -90,7 +90,9 @@ public class Puzzle {
   }
 
   /**
-   * Returns a new copy of this puzzle
+   * Returns a new copy of this puzzle. colNums and rowNums will still reference same arraylist,
+   * but board will reference a second copy of the board.
+   * Allows for manipulating puzzle differently for each copy.
    * @return a copy of this puzzle
    */
   public Puzzle createCopy() {

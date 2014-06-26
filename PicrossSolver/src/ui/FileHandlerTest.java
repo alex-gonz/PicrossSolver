@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ import puzzle.Puzzle;
  */
 public class FileHandlerTest {
 
-  
+
 
   /**
    * Test method for {@link ui.FileHandler#printBoardToFile(puzzle.Puzzle, java.lang.String)}.
@@ -41,19 +42,31 @@ public class FileHandlerTest {
     for(int i = 0; i < expected.length; i++) {
       assertTrue(outputLines[i] == expected[i]);
     }
-    
+
   }
 
   /**
    * Test method for {@link ui.FileHandler#translate(int)}.
    */
   @Test
-  public void testTranslate() {
-    assertTrue(FileHandler.translate(0).equals(" "));
-    assertTrue(FileHandler.translate(1).equals("\u2588"));
-    assertTrue(FileHandler.translate(2).equals(" "));
-    assertTrue(FileHandler.translate(3).equals(""));
-    assertTrue(FileHandler.translate(-1).equals(""));
+  public void testTranslateInt() {
+    assertTrue(FileHandler.translate(0) == ' ');
+    assertTrue(FileHandler.translate(1) == '\u2588');
+    assertTrue(FileHandler.translate(2) == ' ');
+    assertTrue(FileHandler.translate(3) == '?');
+    assertTrue(FileHandler.translate(-1)== '?');
+  }
+  
+  /**
+   * Test method for {@link ui.FileHandler#translate(char)}.
+   */
+  @Test
+  public void testTranslateChar() {
+    assertTrue(FileHandler.translate('\u2588') == 1);
+    assertTrue(FileHandler.translate(' ') == 2);
+    assertTrue(FileHandler.translate('?') == 0);
+    assertTrue(FileHandler.translate('a') == -1);
+    assertTrue(FileHandler.translate('X') == -1);
   }
 
   /**
@@ -62,15 +75,15 @@ public class FileHandlerTest {
    */
   @Test
   public void testPrintPuzzleToFile() throws IOException {
-  Puzzle small = FileHandler.getFilePuzzle("testPuzzles/5x5.txt");
-  FileHandler.printPuzzleToFile(small, "output.txt");
-  byte[] outputLines = Files.readAllBytes(Paths.get("output.txt"));
-  byte[] expected = Files.readAllBytes(Paths.get("testPuzzles/5x5.txt"));
-  //Same except for new line at end of output
-  assertTrue(outputLines.length-2 == expected.length);
-  for(int i = 0; i < expected.length; i++) {
-    assertTrue(outputLines[i] == expected[i]);
-  }
+    Puzzle small = FileHandler.getFilePuzzle("testPuzzles/5x5.txt");
+    FileHandler.printPuzzleToFile(small, "output.txt");
+    byte[] outputLines = Files.readAllBytes(Paths.get("output.txt"));
+    byte[] expected = Files.readAllBytes(Paths.get("testPuzzles/5x5.txt"));
+    //Same except for new line at end of output
+    assertTrue(outputLines.length-2 == expected.length);
+    for(int i = 0; i < expected.length; i++) {
+      assertTrue(outputLines[i] == expected[i]);
+    }
   }
 
   /**
@@ -85,7 +98,7 @@ public class FileHandlerTest {
     one.add(1);
     a.add(one);
     assertTrue(new Puzzle(a,a).equals(fromFile));
-    
+
     //Test with larger puzzle
     fromFile = FileHandler.getFilePuzzle("testPuzzles/5x5.txt");
     ArrayList<ArrayList<Integer>> row = new ArrayList<ArrayList<Integer>>();
@@ -118,4 +131,31 @@ public class FileHandlerTest {
     assertTrue(new Puzzle(col,row).equals(fromFile));
   }
 
+
+
+  /**
+   * Test method for {@link ui.FileHandler#getFileBoard(java.lang.String)}.
+   */
+  @Test
+  public void testGetFileBoard() {
+    //Test basic case
+    int[] input = FileHandler.getFileBoard("testPuzzles/baseSolution.txt");
+    int[] expected = {1};
+    assertTrue(Arrays.equals(expected, input));
+
+    //Test with unicode characters
+    input = FileHandler.getFileBoard("testPuzzles/5x5Solution.txt");
+    int[] smallSol = {
+        1,1,1,2,2,
+        1,2,1,1,1,
+        2,2,2,1,1,
+        1,2,2,2,1,
+        1,1,2,2,2};
+    assertTrue(Arrays.equals(smallSol, input));
+
+    //Test with numbers
+    input = FileHandler.getFileBoard("testPuzzles/5x5NumberSolution.txt");
+    assertTrue(Arrays.equals(smallSol, input));
+  }
 }
+

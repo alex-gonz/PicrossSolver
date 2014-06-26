@@ -82,14 +82,29 @@ public class FileHandler {
   /**
    * Translates integers in board to a visual representation
    * @param i given integer
-   * @return dark block if it's filled in, space if it's not, empty string if it doesn't match anything
+   * @return dark block if it's filled in, space if it's not, ? if it doesn't match any
    */
-  public static String translate(int i) {
+  public static char translate(int i) {
     if(i == 1)
-      return "\u2588";
+      return '\u2588';
     if(i == 2 || i == 0)
-      return " ";
-    return "";
+      return ' ';
+    return '?';
+  }
+  
+  /**
+   * Translates characters in board to integer representation
+   * @param c given character
+   * @return dark block becomes 1, space becomes 2, ? becomes 0, -1 if it doesn't match either
+   */
+  public static int translate(char c) {
+    if(c == '\u2588')
+      return 1;
+    if(c == ' ')
+      return 2;
+    if(c == '?')
+      return 0;
+    return -1;
   }
 
   /**
@@ -193,6 +208,42 @@ public class FileHandler {
       e.printStackTrace();
     }
     return null;
+  }
+
+  /**
+   * Gets a board from file. Board must be rectangular
+   * @param fileLocation given location
+   * @return a given board as array from file location, null if none found at location
+   */
+  public static int[] getFileBoard(String fileLocation) {
+    int[] ret = null;
+    try {
+      //Get board as lines
+      List<String> lines = Files.readAllLines(Paths.get(fileLocation), utf8);
+      
+      //Determine size of ret, assume a rectangular board
+      ret = new int[lines.get(0).length() * lines.size()];
+      
+      //Iterate through all lines, adding each character to the board
+      int nextEmpty = 0;
+      for(String line: lines) {
+        for(int i = 0; i<line.length(); i++) {
+          char c = line.charAt(i);
+          //Add character as number if it is one
+          if(Character.isDigit(c))
+            ret[nextEmpty] = Character.getNumericValue(c);
+          else
+            //Otherwise, translate it if possible
+            ret[nextEmpty] = translate(c);
+          nextEmpty++;
+        }
+      }
+      
+    } catch (IOException e) {
+      //Error if we can't find file
+      e.printStackTrace();
+    }
+    return ret;
   }
 
 }
