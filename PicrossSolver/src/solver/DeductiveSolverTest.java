@@ -1,6 +1,7 @@
 package solver;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 
@@ -68,22 +69,103 @@ public class DeductiveSolverTest {
     assertTrue(Arrays.equals(output.getBoard(), partialDeductiveSol));
   }
 
+
   /**
-   * Test method for {@link solver.DeductiveSolver#deduceFilledLines(puzzle.Puzzle)}.
+   * Test method for {@link solver.DeductiveSolver#deduceFilledColumns(puzzle.Puzzle)}.
    */
   @Test
-  public void testDeduceFilledLines() {
+  public void testDeduceFilledColumns() {
+    fail("Not yet implemented.");
+  }
+
+  /**
+   * Test method for {@link solver.DeductiveSolver#deduceFilledRows(puzzle.Puzzle)}.
+   */
+  @Test
+  public void testDeduceFilledRows() {
     // Trivial case
-    singleSquare = DeductiveSolver.deduceFilledLines(singleSquare);
+    singleSquare = DeductiveSolver.deduceFilledRows(singleSquare);
     assertTrue(Arrays.equals(singleSquare.getBoard(), singleSquareSol));
 
     // More complex case
-    partial = DeductiveSolver.deduceFilledLines(partial);
+    partial = DeductiveSolver.deduceFilledRows(partial);
     int[] expected = {
         1,1,
         0,0,
         0,0,
         0,0};
     assertTrue(Arrays.equals(partial.getBoard(), expected));
+
+    // Test full solve
+    int input[] = {
+        0,0,
+        0,0,
+        1,0,
+        0,0};
+    int sol[] = {
+        1,1,
+        0,0,
+        1,0,
+        0,1};
+    partial.setBoard(input);
+    partial = DeductiveSolver.deduceFilledRows(partial);
+    assertTrue(Arrays.equals(partial.getBoard(), sol));
+  }
+
+  /**
+   * Test method for {@link solver.DeductiveSolver#findLeftmostFillable(int[], int, int)}.
+   */
+  @Test
+  public void testFindLeftmostFillable() {
+    // Test base cases
+    int[] base = {0};
+    assertTrue(DeductiveSolver.findLeftmostFillable(base, 1, 0) == 0);
+    int[] full = {2};
+    assertTrue(DeductiveSolver.findLeftmostFillable(full, 1, 0) == -1);
+
+    // Test just barely fitting
+    int[] twoWide = {0,2,0,0,2,0,0,0};
+    assertTrue(DeductiveSolver.findLeftmostFillable(twoWide, 2, 0) == 2);
+
+    // Test too large
+    assertTrue(DeductiveSolver.findLeftmostFillable(twoWide, 4, 0) == -1);
+    // Test that moving position later works
+    assertTrue(DeductiveSolver.findLeftmostFillable(twoWide, 2, 3) == 5);
+    assertTrue(DeductiveSolver.findLeftmostFillable(twoWide, 2, 6) == 6);
+
+    // Test that ending next to a full square pushes found position to end of the line
+    int[] toEnd = {0,1,2,0,0,1,1,0};
+    assertTrue(DeductiveSolver.findLeftmostFillable(toEnd, 1, 0) == 1);
+    assertTrue(DeductiveSolver.findLeftmostFillable(toEnd, 2, 1) == 5);
+    assertTrue(DeductiveSolver.findLeftmostFillable(toEnd, 2, 6) == 6);
+  }
+
+  /**
+   * Test method for {@link solver.DeductiveSolver#findRightmostFillable(int[], int, int)}.
+   */
+  @Test
+  public void testFindRightmostFillable() {
+    // TODO create test
+    // Test base cases
+    int[] base = {0};
+    assertTrue(DeductiveSolver.findRightmostFillable(base, 1, 0) == 0);
+    int[] full = {2};
+    assertTrue(DeductiveSolver.findRightmostFillable(full, 1, 0) == -1);
+
+    // Test just barely fitting
+    int[] twoWide = {0,0,0,2,0,0,2,0};
+    assertTrue(DeductiveSolver.findRightmostFillable(twoWide, 2, twoWide.length - 1) == 5);
+
+    // Test too large
+    assertTrue(DeductiveSolver.findRightmostFillable(twoWide, 4, twoWide.length - 1) == -1);
+    // Test that moving position later works
+    assertTrue(DeductiveSolver.findRightmostFillable(twoWide, 2, 4) == 2);
+    assertTrue(DeductiveSolver.findRightmostFillable(twoWide, 2, 1) == 1);
+
+    // Test that ending next to a full square pushes found position to end of the line
+    int[] toEnd = {0,1,1,0,0,2,1,0};
+    assertTrue(DeductiveSolver.findRightmostFillable(toEnd, 1, toEnd.length - 1) == 6);
+    assertTrue(DeductiveSolver.findRightmostFillable(toEnd, 2, toEnd.length - 2) == 2);
+    assertTrue(DeductiveSolver.findRightmostFillable(toEnd, 2, 1) == 1);
   }
 }

@@ -182,7 +182,8 @@ public class FileHandler {
           if (!s.equals("")) {
             // Only add if number > 0
             int found = Integer.parseInt(s);
-            currentRow.add(found);
+            if (found > 0)
+              currentRow.add(found);
           }
         }
         // Add row to row list
